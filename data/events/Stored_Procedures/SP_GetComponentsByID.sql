@@ -1,0 +1,2 @@
+EXEC	GetComponentsByID
+		@inputID
