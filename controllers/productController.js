@@ -3,8 +3,8 @@
     import config from "../config.js";
 
     import {
-        AddNewComponentInProduct, DeleteComponentFromProduct,
-        getAllProducts, GetHistoryProductionProducts,
+        DeleteComponentFromProduct,
+        GetHistoryProductionProducts,
         GetHistorySaleProducts,
         ProductionProduct,
         SaleProduct
@@ -166,27 +166,3 @@
         }
     }
 
-    export const addNewComponentController = async (req, res) => {
-        try {
-            const data = req.body;
-            const result = await AddNewComponentInProduct(data);
-            res.json(result);
-        }
-        catch (error)
-        {
-            res.status(400).send(error.message, "Ошибка добавления компонента!");
-        }
-    }
-
-    // Удаление компонента из рецепта продукта
-    export const deleteComponentFromProductController = async (req, res) => {
-        try {
-            const data = req.body;
-            const result = await DeleteComponentFromProduct(data);
-            res.json(result);
-        }
-        catch (error)
-        {
-            res.status(400).send(error.message, "Ошибка удаления компонента из рецепта!");
-        }
-    }

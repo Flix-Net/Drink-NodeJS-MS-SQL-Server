@@ -145,36 +145,12 @@ export const GetEmployees = async () => {
 
 
 
-export const GetComponentsByID = async (data) => {
-    try{
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Stored_Procedures');
 
-        const result = await request
-            .input("inputID", sql.TinyInt, data.inputID )
-            .query(sqlQueries.SP_GetComponentsByID);
-
-        return result.recordset;
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
 
 
 export const GetCountCompFromWarehouse = async (ComponentID) => {
     try{
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Stored_Procedures');
 
-        const result = await request
-            .input("ComponentID", sql.TinyInt, ComponentID )
-            .query(sqlQueries.SP_GetCountCompFromWarehouse);
-
-        return result.recordset;
     }
     catch (error)
     {
@@ -306,25 +282,7 @@ export const selectionDataByDate = async (data) => {
 }
 
 // Добавление нового компонента в рецепт продукта
-export const AddNewComponentInProduct = async (data) => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
 
-        await request
-            .input("Product", sql.TinyInt, data.Product)
-            .input("RawMaterial", sql.TinyInt, data.RawMaterial)
-            .input("Count", sql.Decimal(10,2), data.Count)
-            .query(sqlQueries.AddComponentInProduct);
-
-        return ("Компонент успешно добавлен!");
-    }
-    catch (error)
-    {
-        console.log(`Ошибка: ${error.message}`);
-    }
-}
 
 export const DeleteComponentFromProduct = async (data) => {
     try {

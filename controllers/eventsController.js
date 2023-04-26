@@ -72,33 +72,7 @@ export const getHistoryPurchaseRawMatController = async (req, res) => {
 
 
 
-export const getComponentsByIDController = async (req, res)=>{
-    try{
-        let data = req.body;
-        const components = await GetComponentsByID(data);
 
-        return res.json(components);
-    }
-    catch (error)
-    {
-        res.status(400).send(error.message, "Ошибка добавления продукта!");
-
-    }
-}
-
-export const getCountMaterialFromWarehouseController = async (req, res) => {
-    try {
-        let params = req.body;
-        const countMaterialList = await GetCountCompFromWarehouse(params.ComponentID);
-
-        return res.json(countMaterialList);
-    }
-    catch (error)
-    {
-        res.status(400).send(error.message, "Ошибка вывода продуктов!");
-
-    }
-}
 
 export const AddFinishProductController = async (req, res) => {
     try {

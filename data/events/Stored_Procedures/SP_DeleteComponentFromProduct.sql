@@ -1,0 +1,3 @@
+exec DeleteComponentFromProduct
+    @productID,
+    @rawMaterialID
