@@ -1,0 +1,3 @@
+execute AddNewProduct
+    @Name,
+    @Unit

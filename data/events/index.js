@@ -18,39 +18,6 @@ export const getAllProducts = async () => {
     }
 }
 
-export const getRawMaterial = async () => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
-
-        const result = await request.query(sqlQueries.GetRawMaterial);
-
-        // const result = await request.query(`select * from FinishProduct`);
-        return result.recordset;
-    }
-    catch (error) {
-        console.log(error.message);
-    }
-}
-
-export const addNewProduct = async (data)=>{
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
-
-        await request
-            .input("Name", sql.NVarChar(50),data.Name )
-            .input("Unit", sql.TinyInt,data.Unit )
-            .query(sqlQueries.AddNewProduct);
-
-        return ("Продукт успешно добавлен");
-    }
-    catch (error) {
-        console.log(error.message);
-    }
-}
 
 export const addNewRawMaterial = async (data)=>{
     try {
@@ -176,21 +143,7 @@ export const GetEmployees = async () => {
 }
 
 
-export const GetUnit = async () => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
 
-        const result = await request.query(sqlQueries.GetUnit);
-
-        return result.recordset;
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
 
 export const GetComponentsByID = async (data) => {
     try{
@@ -330,22 +283,7 @@ export const getAllPositions = async () => {
     }
 }
 
-export const addNewUnit = async (data) => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
 
-        const result = await request
-            .input("Name", sql.NVarChar(50), data.Name)
-            .query(sqlQueries.AddNewUnit);
-        return ("Единица измерения успешно добавлена!");
-    }
-    catch (error)
-    {
-        console.log(`Ошибка: ${error.message}`);
-    }
-}
 
 export const selectionDataByDate = async (data) => {
     try {
@@ -367,7 +305,8 @@ export const selectionDataByDate = async (data) => {
     }
 }
 
-export const AddNewComponent = async (data) => {
+// Добавление нового компонента в рецепт продукта
+export const AddNewComponentInProduct = async (data) => {
     try {
         await sql.connect(config.sql);
         let request = new sql.Request();
@@ -377,7 +316,26 @@ export const AddNewComponent = async (data) => {
             .input("Product", sql.TinyInt, data.Product)
             .input("RawMaterial", sql.TinyInt, data.RawMaterial)
             .input("Count", sql.Decimal(10,2), data.Count)
-            .query(sqlQueries.EditComponents);
+            .query(sqlQueries.AddComponentInProduct);
+
+        return ("Компонент успешно добавлен!");
+    }
+    catch (error)
+    {
+        console.log(`Ошибка: ${error.message}`);
+    }
+}
+
+export const DeleteComponentFromProduct = async (data) => {
+    try {
+        await sql.connect(config.sql);
+        let request = new sql.Request();
+        const sqlQueries = await utils('events/Requests');
+
+        await request
+            .input("Product", sql.TinyInt, data.Product)
+            .input("RawMaterial", sql.TinyInt, data.RawMaterial)
+            .query(sqlQueries.DeleteComponentFromProduct);
 
         return ("Компонент успешно добавлен!");
     }

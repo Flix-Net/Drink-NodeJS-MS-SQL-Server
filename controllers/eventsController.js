@@ -2,11 +2,11 @@ import {
     GetMyBalance,
     GetEmployees,
     PurchaseRawMaterial,
-    GetUnit,
+
     GetHistoryPurchaseRawMaterials,
     GetComponentsByID,
     GetCountCompFromWarehouse,
-    AddFinishProduct, addNewProduct, addNewEmployee, addNewUnit, getAllPositions, selectionDataByDate
+    AddFinishProduct, addNewEmployee, getAllPositions, selectionDataByDate
 } from "../data/events/index.js";
 
 export const getBalanceController = async (req, res)=>{
@@ -70,18 +70,7 @@ export const getHistoryPurchaseRawMatController = async (req, res) => {
     }
 }
 
-export const getUnitController = async (req, res)=>{
-    try{
-        const unit = await GetUnit();
 
-        return res.json(unit);
-    }
-    catch (error)
-    {
-        res.status(400).send(error.message, "Ошибка добавления продукта!");
-
-    }
-}
 
 export const getComponentsByIDController = async (req, res)=>{
     try{
@@ -145,18 +134,6 @@ export const getPositionsController = async (req, res) => {
     }
     catch (error) {
         res.status(400).send(error.message, "Ошибка добавления сотрудника!");
-    }
-}
-
-export const addNewUnitController = async (req, res) => {
-    try {
-        let data = req.body;
-        const newUnit = await addNewUnit(data);
-
-        return res.json({message:newUnit});
-    }
-    catch (error) {
-        res.status(400).send(error.message, "Ошибка добавления новой единицы измерения!");
     }
 }
 

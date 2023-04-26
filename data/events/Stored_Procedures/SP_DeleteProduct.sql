@@ -1,0 +1,2 @@
+exec DeleteProduct
+    @IDProduct;

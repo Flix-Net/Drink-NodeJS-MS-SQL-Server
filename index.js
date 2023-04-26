@@ -4,8 +4,10 @@ import sql from "mssql";
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import eventRoutes from "./routes/eventRoutes.js";
+//import eventRoutes from "./routes/eventRoutes.js";
 import config from "./config.js";
+
+import mainRouter from "./routes/index.js";
 
 
 
@@ -24,7 +26,7 @@ const corsOptions ={
 app.use(cors(corsOptions));
 app.use(bodyParser.json());
 app.use(express.json());
-app.use("/api", eventRoutes);
+app.use('/api', mainRouter);
 
 
 sql.on('error', err =>{
