@@ -1,8 +1,7 @@
     import express  from 'express';
     import {
-        AddFinishProductController, addNewEmployeeController, addNewUnitController,
-        getBalanceController,
-        getEmployeesController, getHistoryPurchaseRawMatController, getPositionsController,
+        AddFinishProductController, addNewEmployeeController,
+        getHistoryPurchaseRawMatController,
         purchaseRawMaterialController, selectionDataByDateController
     } from '../controllers/eventsController.js';
 
@@ -28,8 +27,8 @@
 
 
 
-    router.get('/getMyBalance', getBalanceController);
-    router.get('/getEmployees', getEmployeesController);
+
+
 
     router.post('/PurchaseRawMaterial', purchaseRawMaterialController);
 
@@ -41,7 +40,7 @@
 
     router.post("/addFinishProduct", AddFinishProductController);
 
-    router.get("/getAllPositions", getPositionsController);
+
     router.post("/addNewEmployee", addNewEmployeeController);
 
 

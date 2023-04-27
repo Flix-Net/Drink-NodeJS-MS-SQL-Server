@@ -3,7 +3,6 @@
     import config from "../config.js";
 
     import {
-        DeleteComponentFromProduct,
         GetHistoryProductionProducts,
         GetHistorySaleProducts,
         ProductionProduct,

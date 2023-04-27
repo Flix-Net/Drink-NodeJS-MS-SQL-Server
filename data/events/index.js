@@ -3,20 +3,7 @@ import sql from "mssql";
 import config from "../../config.js";
 
 
-export const getAllProducts = async () => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
 
-        const result = await request.query(sqlQueries.GetAllProducts);
-
-        return result.recordset;
-    }
-    catch (error) {
-        console.log(error.message);
-    }
-}
 
 
 export const addNewRawMaterial = async (data)=>{
@@ -109,54 +96,6 @@ export const GetHistoryProductionProducts = async () => {
 }
 
 
-export const GetMyBalance = async () => {
-    try{
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
-
-        const result = await request.query(sqlQueries.GetMyBalance);
-
-        // const result = await request.query(`select * from FinishProduct`);
-        return result.recordset;
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
-
-export const GetEmployees = async () => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
-
-        const result = await request.query(sqlQueries.GetEmployees);
-
-        return result.recordset;
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
-
-
-
-
-
-
-
-export const GetCountCompFromWarehouse = async (ComponentID) => {
-    try{
-
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
 
 
 export const ProductionProduct = async (data) => {
@@ -222,42 +161,7 @@ export const SaleProduct = async (data) => {
     }
 }
 
-export const addNewEmployee = async (data) => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
 
-        const result = await request
-            .input("FIO", sql.NVarChar(50), data.FIO )
-            .input("Position", sql.TinyInt, data.Position )
-            .input("Salary", sql.Decimal(10, 2), data.Salary )
-            .input("Address", sql.NVarChar(50), data.Address )
-            .input("Phone", sql.NVarChar(50), data.Phone )
-            .query(sqlQueries.AddNewEmployee);
-        return ("Сотрудник успешно добавлен!");
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
-
-export const getAllPositions = async () => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
-
-        const result = await request.query(sqlQueries.GetAllPositions);
-
-        return result.recordset;
-    }
-    catch (error)
-    {
-        console.log(error.message);
-    }
-}
 
 
 
@@ -274,28 +178,6 @@ export const selectionDataByDate = async (data) => {
             .query(sqlQueries.SP_SelectionDataByDate);
 
         return result.recordset;
-    }
-    catch (error)
-    {
-        console.log(`Ошибка: ${error.message}`);
-    }
-}
-
-// Добавление нового компонента в рецепт продукта
-
-
-export const DeleteComponentFromProduct = async (data) => {
-    try {
-        await sql.connect(config.sql);
-        let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
-
-        await request
-            .input("Product", sql.TinyInt, data.Product)
-            .input("RawMaterial", sql.TinyInt, data.RawMaterial)
-            .query(sqlQueries.DeleteComponentFromProduct);
-
-        return ("Компонент успешно добавлен!");
     }
     catch (error)
     {

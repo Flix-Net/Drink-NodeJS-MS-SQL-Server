@@ -9,30 +9,9 @@ import {
     AddFinishProduct, addNewEmployee, getAllPositions, selectionDataByDate
 } from "../data/events/index.js";
 
-export const getBalanceController = async (req, res)=>{
-    try{
-        const myBalance = await GetMyBalance();
 
-        return res.json(myBalance[0].Sum);
-    }
-    catch (error)
-    {
-        res.status(400).send(error.message, "Ошибка добавления продукта!");
-    }
-}
 
-export const getEmployeesController = async (req, res)=>{
-    try{
-        const employees = await GetEmployees();
 
-        return res.json(employees);
-    }
-    catch (error)
-    {
-        res.status(400).send(error.message, "Ошибка добавления продукта!");
-
-    }
-}
 
 export const purchaseRawMaterialController = async (req, res) => {
     try {
@@ -88,28 +67,9 @@ export const AddFinishProductController = async (req, res) => {
     }
 }
 
-export const addNewEmployeeController = async (req, res) => {
-    try {
-        let data = req.body;
-        const newEmployee = await addNewEmployee(data);
 
-        return res.json({message:newEmployee});
-    }
-    catch (error) {
-        res.status(400).send(error.message, "Ошибка добавления сотрудника!");
-    }
-}
 
-export const getPositionsController = async (req, res) => {
-    try {
-        const arrPositions = await getAllPositions();
 
-        return res.json(arrPositions);
-    }
-    catch (error) {
-        res.status(400).send(error.message, "Ошибка добавления сотрудника!");
-    }
-}
 
 export const selectionDataByDateController = async (req, res) => {
     try {

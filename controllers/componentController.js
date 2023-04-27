@@ -1,4 +1,3 @@
-    import {GetCountCompFromWarehouse} from "../data/events/index.js";
     import sql from "mssql";
     import config from "../config.js";
     import utils from "../data/utils.js";
