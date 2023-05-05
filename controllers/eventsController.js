@@ -1,40 +1,11 @@
 import {
-    GetMyBalance,
-    GetEmployees,
     PurchaseRawMaterial,
-
     GetHistoryPurchaseRawMaterials,
-    GetComponentsByID,
-    GetCountCompFromWarehouse,
-    AddFinishProduct, addNewEmployee, getAllPositions, selectionDataByDate
+    AddFinishProduct, selectionDataByDate
 } from "../data/events/index.js";
 
 
 
-
-
-export const purchaseRawMaterialController = async (req, res) => {
-    try {
-        const data = req.body;
-        console.log(`Количество: ${data.countRawMaterial}`);
-        let total = await PurchaseRawMaterial(data);
-        if (total === undefined)
-        {
-            return res.json("Недостаточно средств на балансе!");
-        }
-        else
-        {
-            return res.json(total);
-        }
-
-
-    }
-    catch (error)
-    {
-        res.status(400).send(error.message, "Ошибка добавления продукта!");
-
-    }
-}
 
 export const getHistoryPurchaseRawMatController = async (req, res) => {
     try {

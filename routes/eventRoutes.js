@@ -2,7 +2,7 @@
     import {
         AddFinishProductController, addNewEmployeeController,
         getHistoryPurchaseRawMatController,
-        purchaseRawMaterialController, selectionDataByDateController
+         selectionDataByDateController
     } from '../controllers/eventsController.js';
 
     import {
@@ -30,7 +30,7 @@
 
 
 
-    router.post('/PurchaseRawMaterial', purchaseRawMaterialController);
+
 
     router.get("/getUnits", getUnitController);
     router.post("/addNewUnit", addNewUnitController);

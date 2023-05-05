@@ -1,10 +1,15 @@
+    import express from "express";
+    import {
+        addNewPositionController,
+        deletePositionController,
+        getPositionsController
+    } from "../../controllers/positionController.js";
 
-import express from "express";
-import {getPositionsController} from "../../controllers/positionController.js";
 
+    const router = express.Router();
 
-const router = express.Router();
+    router.get("/getAllPositions", getPositionsController);
+    router.post("/addNewPosition", addNewPositionController);
+    router.delete("/deletePosition/:id", deletePositionController);
 
-router.get("/getAllPositions", getPositionsController);
-
-export default router;
+    export default router;

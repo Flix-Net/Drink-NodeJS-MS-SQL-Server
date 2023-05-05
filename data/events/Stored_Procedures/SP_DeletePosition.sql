@@ -1,0 +1,2 @@
+execute DeletePosition
+    @PositionID

@@ -31,17 +31,47 @@ export const addNewUnitController = async (req, res) => {
         const data = req.body;
         await sql.connect(config.sql);
         let request = new sql.Request();
-        const sqlQueries = await utils('events/Requests');
+        const sqlQueries = await utils('events/Stored_Procedures');
 
         const result = await request
             .input("Name", sql.NVarChar(50), data.Name)
-            .query(sqlQueries.AddNewUnit);
-        return ("Единица измерения успешно добавлена!");
+            .query(sqlQueries.SP_AddNewUnit);
+
+        res.status(200).json({
+            success: true,
+            message: "Единица измерения успешно добавлена!"
+        });
     }
     catch (error) {
         res.status(500).json({
             success: false,
             message: "Ошибка добавления новой единицы измерения!",
+            error: error.message,
+        });
+    }
+}
+
+
+export const deleteUnitController = async (req, res) => {
+    try {
+        const UnitID = req.params.id;
+        await sql.connect(config.sql);
+        let request = new sql.Request();
+        const sqlQueries = await utils('events/Stored_Procedures');
+
+        const result = await request
+            .input("UnitID", sql.TinyInt, UnitID)
+            .query(sqlQueries.SP_DeleteUnit);
+
+        res.status(200).json({
+            success: true,
+            message: "Единица измерения успешно удалена!"
+        });
+    }
+    catch (error) {
+        res.status(500).json({
+            success: false,
+            message: "Ошибка удаления единицы измерения!",
             error: error.message,
         });
     }

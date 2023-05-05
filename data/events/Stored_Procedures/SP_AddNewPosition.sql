@@ -1,0 +1,2 @@
+execute AddNewPosition
+    @Position

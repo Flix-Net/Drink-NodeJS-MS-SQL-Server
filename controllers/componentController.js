@@ -54,15 +54,15 @@
     }
 
 
+
     // Добавить компонент в рецепт продукта
-    export const addNewComponentController = async (req, res) => {
+    export const addNewComponentInProductController = async (req, res) => {
         try {
             const data = req.body;
-            let messageStatus = "";
-            console.log(data);
+            let messageStatus;
             await sql.connect(config.sql);
             let request = new sql.Request();
-            const sqlQueries = await utils('events/Stored_Procedures');
+            //const sqlQueries = await utils('events/Stored_Procedures');
 
             // const result = await request
             //     .input("productID", sql.TinyInt, data.productID)
