@@ -9,6 +9,7 @@
     import budgetRoutes from "./Balance/BalanceRoutes.js"
     import employeeRoutes from "./Employees/EmployeesRoutes.js";
     import positionsRoutes from "./Positions/PositionRoutes.js";
+    import salaryRoutes from "./Salary/SalaryRoutes.js";
 
     router.use("/products", productRoutes);
     router.use("/units", unitsRoutes);
@@ -17,6 +18,7 @@
     router.use("/Budget", budgetRoutes);
     router.use("/Employee", employeeRoutes);
     router.use("/Position", positionsRoutes);
+    router.use("/Salary", salaryRoutes);
 
 
     export default router;

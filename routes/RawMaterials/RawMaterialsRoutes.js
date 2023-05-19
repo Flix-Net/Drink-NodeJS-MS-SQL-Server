@@ -3,14 +3,16 @@
     addNewRawMaterialController,
     deleteRawMaterialController,
     getRawMaterialController,
-    purchaseRawMaterialController
-    } from "../../controllers/rawMaterialController.js";
+    purchaseRawMaterialController, selectionDataByDateController}
+        from "../../controllers/rawMaterialController.js";
+
     const router = express.Router();
 
     router.post("/addNewRawMaterial", addNewRawMaterialController);
     router.delete("/deleteRawMaterial/:id", deleteRawMaterialController);
     router.get('/getRawMaterials', getRawMaterialController);
     router.post('/purchaseRawMaterial', purchaseRawMaterialController);
+    router.post('/selectionDataByDate', selectionDataByDateController);
 
 
     export default router;

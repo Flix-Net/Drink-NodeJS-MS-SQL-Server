@@ -1,0 +1,3 @@
+execute NewPaymentList
+    @MonthID,
+	@Year

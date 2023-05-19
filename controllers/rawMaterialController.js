@@ -98,7 +98,7 @@
             const result = await request
                 .input("IDRawMaterial", sql.TinyInt,data.IDRawMaterial )
                 .input("countRawMaterial", sql.Decimal(10, 2),data.countRawMaterial )
-                .input("costRawMaterial", sql.Decimal(10, 2),data.costRawMaterial )
+                .input("costRawMaterial", sql.Decimal(10, 5),data.costRawMaterial )
                 .input("IDEmployee", sql.TinyInt,data.IDEmployee )
                 .query(sqlQueries.SP_PurchaseRawMat);
 
@@ -108,8 +108,40 @@
                 product: result.recordset,
             });
         }
-        catch (err)
-        {
-            console.log(`Не удалось совершить покупку, ${err}`);
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Не удалось совершить покупку",
+                error: error.message,
+            });
+        }
+    }
+
+
+    export const selectionDataByDateController = async (req, res) => {
+        try {
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const result = await request
+                .input("TABLE_NAME", sql.NVarChar(50), data.TABLE_NAME)
+                .input("DATE_START", sql.NVarChar(50), data.DATE_START)
+                .input("DATE_END", sql.NVarChar(50), data.DATE_END)
+                .query(sqlQueries.SP_SelectionDataByDate);
+
+            res.status(200).json({
+                success: true,
+                message: "История успешно загружена.",
+                purchase: result.recordset,
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Ошибка загрузки истории!",
+                error: error.message,
+            });
         }
     }

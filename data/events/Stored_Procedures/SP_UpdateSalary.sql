@@ -1,0 +1,3 @@
+execute UpdateSalary
+    @EmployeeID,
+	@NewSalary

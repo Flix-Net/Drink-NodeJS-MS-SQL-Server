@@ -28,9 +28,31 @@
         try{
             await sql.connect(config.sql);
             let request = new sql.Request();
-            const sqlQueries = await utils('events/Requests');
+            const sqlQueries = await utils('events/Views');
 
             const result = await request.query(sqlQueries.GetListEmployees);
+
+            res.status(200).json({
+                success: true,
+                message: "Сотрудники успешно загружены.",
+                employees: result.recordset
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Ошибка загрузки сотрудников!",
+                error: error.message,
+            });
+        }
+    }
+
+    export const getInfoEmployeeController = async (req, res)=>{
+        try{
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Views');
+
+            const result = await request.query(sqlQueries.GetInfoEmployee);
 
             res.status(200).json({
                 success: true,
@@ -108,7 +130,6 @@
     export const deleteEmployeeController = async (req, res) => {
         try {
             let {id} = req.params;
-            console.log(id);
             await sql.connect(config.sql);
             let request = new sql.Request();
             const sqlQueries = await utils('events/Stored_Procedures');
@@ -125,6 +146,53 @@
             res.status(500).json({
                 success: false,
                 message: "Ошибка удаления сотрудника!",
+                error: error.message,
+            });
+        }
+    }
+
+
+    export const upCountProdEmpController = async (req, res)=>{
+        try {
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const result = await request
+                .input("IDEmployee", sql.TinyInt, data.selectedEmployee )
+                .query(sqlQueries.SP_UpCountProdEmp);
+
+            res.status(200).json({
+                success: true,
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                error: error.message,
+            });
+        }
+    }
+
+
+    export const updateSalaryController = async (req, res)=>{
+        try {
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const result = await request
+                .input("EmployeeID", sql.TinyInt, data.EmployeeID )
+                .input("NewSalary", sql.Decimal(10, 5), data.NewSalary )
+                .query(sqlQueries.SP_UpdateSalary);
+
+            res.status(200).json({
+                success: true,
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
                 error: error.message,
             });
         }

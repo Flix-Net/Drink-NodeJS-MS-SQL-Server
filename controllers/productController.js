@@ -3,10 +3,8 @@
     import config from "../config.js";
 
     import {
-        GetHistoryProductionProducts,
-        GetHistorySaleProducts,
-        ProductionProduct,
-        SaleProduct
+            GetHistoryProductionProducts,
+            GetHistorySaleProducts,
     } from "../data/events/index.js";
 
     export const addNewProductController = async (req, res) => {
@@ -119,49 +117,179 @@
 
     }
 
-    export const productionProductController = async (req, res) => {
+
+    export const checkComponentAvailabilityController = async (req, res) => {
         try{
-            let params = req.body;
-            await ProductionProduct(params);
-            res.json("Продукт произведен!");
+            let data = req.body;
+            let Status;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            let result = await request
+                .input("productID", sql.TinyInt, data.productID )
+                .output("returnValue", sql.Int)
+                .execute("[dbo].[CheckComponentAvailability]");
+
+            result.output.returnValue ?
+                Status = 1 :
+                Status = 0;
+
+            res.status(200).json({
+                success: true,
+                Status,
+                message: "Проверка успешно завершена!"
+            });
         }
         catch (error)
         {
-            res.status(400).send(error.message, "Ошибка вывода продуктов!");
+            res.status(400).send(error.message, "Ошибка проверки!");
         }
     }
+
+
+
+    export const productionProductController = async (req, res) => {
+        try{
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            await request
+                .input("IDRawMaterial", sql.TinyInt, data.IDRawMaterial )
+                .input("countRawMaterial", sql.Decimal(10, 2), data.countRawMaterial )
+                .input("IDProduct", sql.TinyInt, data.IDProduct )
+                .input("IDEmployee", sql.TinyInt, data.IDEmployee )
+                .query(sqlQueries.SP_ProductionProduct);
+
+            res.status(200).json({
+                success: true,
+                message: "Продукт успешно произведен!"
+            });
+        }
+        catch (error)
+        {
+            res.status(400).send(error.message, "Ошибка производства продукта!");
+        }
+    }
+
+
+    export const addFinishProductController = async (req, res) => {
+        try {
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const result = await request
+                .input("IDProduct", sql.TinyInt, data.IDProduct )
+                .input("countProducts", sql.Decimal(10, 2), data.countProducts )
+                .input("IDEmployee", sql.TinyInt, data.IDEmployee )
+                .query(sqlQueries.SP_AddFinishProduct);
+
+            res.status(200).json({
+                success: true,
+                message: "Продукт успешно зарегистрирован!"
+            });
+        }
+        catch (error)
+        {
+            res.status(400).send(error.message, "Ошибка регистрации продукта!");
+
+        }
+    }
+
 
     export const saleProductController = async (req, res) => {
         try{
-            let params = req.body;
-            const result = await SaleProduct(params);
-            res.json(result);
-        }
-        catch (error)
-        {
-            res.status(400).send(error.message, "Ошибка вывода продуктов!");
-        }
-    }
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
 
-    export const getHistorySaleProductsController = async (req, res) => {
-        try{
-            const result = await GetHistorySaleProducts();
-            res.json(result);
+            const result = await request
+                .input("IDProduct", sql.TinyInt, data.IDProduct )
+                .input("countProduct", sql.Decimal(10, 2), data.countProduct )
+                .input("IDEmployee", sql.TinyInt, data.IDEmployee )
+                .output("returnProfit", sql.Decimal(10, 5))
+                .output("returnStatus", sql.Int)
+                .execute("[dbo].[SaleProduct]");
+
+            console.log({
+                success: true,
+                Status: result.output.returnStatus,
+                Profit: result.output.returnProfit,
+            });
+
+            res.status(200).json({
+                success: true,
+                Status: result.output.returnStatus,
+                Profit: result.output.returnProfit,
+            });
         }
         catch (error)
         {
-            res.status(400).send(error.message, "Ошибка вывода продуктов!");
+            res.status(500).json({
+                success: false,
+                message: "Ошибка продажи продукта",
+                error: error.message,
+            });
         }
     }
 
     export const getHistoryProductionProductsController = async (req, res) => {
-        try{
-            const result = await GetHistoryProductionProducts();
-            res.json(result);
+        try {
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const result = await request
+                .input("TABLE_NAME", sql.NVarChar(50), data.TABLE_NAME)
+                .input("DATE_START", sql.NVarChar(50), data.DATE_START)
+                .input("DATE_END", sql.NVarChar(50), data.DATE_END)
+                .query(sqlQueries.SP_SelectionDataByDate);
+
+            res.status(200).json({
+                success: true,
+                message: "История успешно загружена.",
+                purchase: result.recordset,
+            });
         }
-        catch (error)
-        {
-            res.status(400).send(error.message, "Ошибка вывода продуктов!");
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Ошибка загрузки истории!",
+                error: error.message,
+            });
         }
     }
 
+    export const getHistorySaleProductsController = async (req, res) => {
+        try {
+            let data = req.body;
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const result = await request
+                .input("TABLE_NAME", sql.NVarChar(50), data.TABLE_NAME)
+                .input("DATE_START", sql.NVarChar(50), data.DATE_START)
+                .input("DATE_END", sql.NVarChar(50), data.DATE_END)
+                .query(sqlQueries.SP_SelectionDataByDate);
+
+            res.status(200).json({
+                success: true,
+                message: "История успешно загружена.",
+                purchase: result.recordset,
+            });
+        }
+        catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Ошибка загрузки истории!",
+                error: error.message,
+            });
+        }
+    }

@@ -1,0 +1,2 @@
+execute CheckComponentAvailability
+    @productID
