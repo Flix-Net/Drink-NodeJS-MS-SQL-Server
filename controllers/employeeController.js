@@ -100,7 +100,6 @@
     export const editEmployeeController = async (req, res) => {
         try {
             let data = req.body;
-            console.log(data);
             await sql.connect(config.sql);
             let request = new sql.Request();
             const sqlQueries = await utils('events/Stored_Procedures');
@@ -176,21 +175,28 @@
 
 
     export const updateSalaryController = async (req, res)=>{
-        try {
+        try{
             let data = req.body;
+
             await sql.connect(config.sql);
             let request = new sql.Request();
             const sqlQueries = await utils('events/Stored_Procedures');
 
+            let salary = data.NewSalary;
+            console.log(salary);
+
             const result = await request
                 .input("EmployeeID", sql.TinyInt, data.EmployeeID )
-                .input("NewSalary", sql.Decimal(10, 5), data.NewSalary )
+                .input("NewSalary", sql.Int, salary )
                 .query(sqlQueries.SP_UpdateSalary);
 
             res.status(200).json({
                 success: true,
+                message:"Зарплата изменена.",
+                info: result.recordset,
             });
-        } catch (error) {
+        }
+        catch (error) {
             res.status(500).json({
                 success: false,
                 error: error.message,

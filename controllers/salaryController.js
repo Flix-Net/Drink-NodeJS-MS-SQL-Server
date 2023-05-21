@@ -101,3 +101,28 @@
             });
         }
     }
+
+
+    export const PaymentSalarysController = async (req, res)=>{
+        try{
+
+            await sql.connect(config.sql);
+            let request = new sql.Request();
+            const sqlQueries = await utils('events/Stored_Procedures');
+
+            const status = await request.query(sqlQueries.SP_PaymentSalarys);
+            console.log(status.recordset[0].status)
+
+            res.status(200).json({
+                status: status.recordset[0].status,
+                success: true,
+            });
+        } catch (error) {
+            res.status(500).json({
+                success: false,
+                message: "Ошибка выплаты зарплаты!",
+                error: error.message,
+            });
+        }
+    }
+

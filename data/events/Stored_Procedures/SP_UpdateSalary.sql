@@ -1,3 +1,3 @@
-execute UpdateSalary
-    @EmployeeID,
-	@NewSalary
+EXECUTE	[dbo].[UpdateSalary]
+		@EmployeeID,
+		@NewSalary
